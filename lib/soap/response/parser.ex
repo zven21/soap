@@ -14,7 +14,7 @@ defmodule Soap.Response.Parser do
 
   If a list is empty then `parse/1` returns full parsed response structure into map.
   """
-  @spec parse(String.t(), integer()) :: map()
+  @spec parse(String.t(), atom()) :: map()
   def parse(xml_response, :fault) do
     fault_tag = get_fault_tag(xml_response)
 

@@ -130,7 +130,7 @@ defmodule Soap.Request.Params do
       validated_params ->
         body =
           validated_params
-          |> add_header_part_tag_wrapper(wsdl, operation)
+          # |> add_header_part_tag_wrapper(wsdl, operation)
           |> add_header_tag_wrapper
 
         {:ok, body}
@@ -173,7 +173,7 @@ defmodule Soap.Request.Params do
     params
     |> Tuple.to_list()
     |> Enum.map(&construct_xml_request_header/1)
-    |> insert_tag_parameters
+    |> insert_header_tag_parameters
     |> List.to_tuple()
   end
 
@@ -183,6 +183,11 @@ defmodule Soap.Request.Params do
 
   @spec insert_tag_parameters(params :: list()) :: list()
   defp insert_tag_parameters(params) when is_list(params), do: params |> List.insert_at(1, nil)
+
+  @spec insert_tag_parameters(params :: list()) :: list()
+  defp insert_header_tag_parameters(params) when is_list(params) do
+    ["ns1:#{params |> List.first()}", %{"xmlns:ns1" => "http://login.webservice.bos.kingdee.com"}, List.last(params)]
+  end
 
   @spec add_action_tag_wrapper(list(), map(), String.t()) :: list()
   defp add_action_tag_wrapper(body, wsdl, operation) do
@@ -302,6 +307,6 @@ defmodule Soap.Request.Params do
     Map.get(wsdl, :soap_version, Application.fetch_env!(:soap, :globals)[:version])
   end
 
-  defp env_namespace, do: Application.fetch_env!(:soap, :globals)[:env_namespace] || :env
+  defp env_namespace, do: Application.fetch_env!(:soap, :globals)[:env_namespace] || :soapenv
   defp custom_namespaces, do: Application.fetch_env!(:soap, :globals)[:custom_namespaces] || %{}
 end

@@ -5,21 +5,9 @@ defmodule Soap.RequestTest do
   alias Soap.{Request, Wsdl}
 
   @request_with_header ~S"""
-                       <?xml version="1.0" encoding="UTF-8"?>
-                       <env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://test.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-                         <env:Header>
-                            <Authentication xmlns="http://test.com">
-                               <token>barbaz</token>
-                            </Authentication>
-                         </env:Header>
-                         <env:Body>
-                           <tns:sayHello xmlns="http://test.com">
-                             <body>Hello John</body>
-                           </tns:sayHello>
-                         </env:Body>
-                       </env:Envelope>
+                       <?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://test.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Header><ns1:token xmlns:ns1="http://login.webservice.bos.kingdee.com">barbaz</ns1:token></soapenv:Header><soapenv:Body><tns:sayHello xmlns="http://test.com"><body>Hello John</body></tns:sayHello></soapenv:Body></soapenv:Envelope>
                        """
-                       |> String.replace(~r/>\n.*?</, "><")
+                       |> String.replace(~r/>n.*?</, "><")
                        |> String.trim()
 
   test "#call returns response body" do

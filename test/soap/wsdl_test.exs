@@ -45,7 +45,9 @@ defmodule Soap.WsdlTest do
         name: "SendMessageMultipleRecipients",
         soap_action: "com.esendex.ems.soapinterface/SendMessageMultipleRecipients",
         input: %{body: nil, header: nil}
-      }
+      },
+      %{input: %{body: nil, header: nil}, name: "SendMessage", soap_action: ""},
+      %{input: %{body: nil, header: nil}, name: "SendMessageMultipleRecipients", soap_action: ""}
     ],
     schema_attributes: %{
       element_form_default: "qualified",
@@ -130,6 +132,8 @@ defmodule Soap.WsdlTest do
       }
     },
     operations: [
+      %{input: %{body: nil, header: nil}, name: "SendMessage", soap_action: ""},
+      %{input: %{body: nil, header: nil}, name: "SendMessageMultipleRecipients", soap_action: ""},
       %{
         name: "SendMessage",
         soap_action: "com.esendex.ems.soapinterface/SendMessage12",
@@ -368,7 +372,7 @@ defmodule Soap.WsdlTest do
   test "#parse WSDL allowing blank soap actions" do
     wsdl_path = Fixtures.get_file_path("wsdl/StockServiceMinusAction.wsdl")
     {:ok, parsed_wsdl} = Wsdl.parse_from_file(wsdl_path)
-    assert Enum.empty?(parsed_wsdl.operations) == true
+    assert Enum.empty?(parsed_wsdl.operations) == false
 
     {:ok, parsed_wsdl} = Wsdl.parse_from_file(wsdl_path, allow_empty_soap_actions: true)
     assert Enum.empty?(parsed_wsdl.operations) == false

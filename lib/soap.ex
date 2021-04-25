@@ -90,6 +90,8 @@ defmodule Soap do
   """
   @spec call(wsdl :: map(), operation :: String.t(), params :: map(), headers :: any(), opts :: any()) :: any()
   def call(wsdl, operation, params, headers \\ [], opts \\ []) do
+    opts = Keyword.merge(opts, [timeout: 15000, recv_timeout: 15000])
+
     wsdl
     |> validate_operation(operation)
     |> Request.call(operation, params, headers, opts)
